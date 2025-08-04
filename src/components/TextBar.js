@@ -2,8 +2,18 @@
 import { Box,  TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 
-export default function TextBar({ handleQueryChange, handleSubmit }) {
-
+export default function TextBar({
+    value, 
+    handleQueryChange, 
+    handleSubmit, 
+    disabled=false }
+){
+    
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter' && !disabled) {
+            handleSubmit();
+        }
+    };
 
     return(
         <Box
@@ -16,9 +26,12 @@ export default function TextBar({ handleQueryChange, handleSubmit }) {
                 padding: 2,
                 boxShadow: 3,
                 borderRadius: 2,
+                opacity: disabled ? 0.5 : 1,
             }}>
             <TextField 
+                value={value}
                 variant="standard" 
+                disabled={disabled}
                 sx={{
                     marginTop: 1, 
                     width: '300px',
@@ -26,7 +39,10 @@ export default function TextBar({ handleQueryChange, handleSubmit }) {
                         borderBottom: '1px solid #75c5fa',
                     }  ,
                     '& .MuiInput-underline:hover:before': {
-                        borderBottom: '1px solid #5aa5fa',
+                        borderBottom: '2px solid #75c5fa',
+                    },
+                    '& .MuiInput-underline:hover:after': {
+                        borderBottom: '2px solid #75c5fa',
                     },
                     '& .MuiInput-underline:focus': {
                         borderBottom: '2px solid #75c5fa',  
@@ -37,6 +53,7 @@ export default function TextBar({ handleQueryChange, handleSubmit }) {
                 
                 }} 
                 onChange={handleQueryChange}
+                onKeyDown={handleKeyPress }
             />
             <SendIcon 
                 sx={{
@@ -48,7 +65,7 @@ export default function TextBar({ handleQueryChange, handleSubmit }) {
                         color:'#5aa5fa'
                     },
                 }}
-                onClick={handleSubmit}
+                onClick={disabled? undefined: handleSubmit}
             />
         </Box>
     )
