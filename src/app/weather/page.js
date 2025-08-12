@@ -34,12 +34,26 @@ export default function MistralPage(){
         setChatHistory(prev => [...prev,{ text: 'Loading...', type: 'response' }]);
         setIsLoading(true);
         try {
-            const res = await axios.post('http://127.0.0.1:8000/api/llm/generate-response', { request: query });
+            const res = await axios.post('http://127.0.0.1:8000/api/weather/get-weather', { query: query });
             console.log(res.data);
             setQuery(''); // Clear input after submission
+            
+            let displayText = '';
+            
+            if (res.data && typeof res.data === 'object') {
+                const { location, temperature, description, humidity, wind_speed } = res.data;
+                displayText = `Location: ${location || 'N/A'}\n\n`;
+                displayText += `Temperature: ${temperature || 'N/A'}°C\n\n`;
+                displayText += `Description: ${description || 'N/A'}\n\n`;
+                displayText += `Humidity: ${humidity || 'N/A'}%\n\n`;   
+                displayText += `Wind Speed: ${wind_speed || 'N/A'} m/s\n\n`; 
 
+            } else {
+                displayText = String(res.data);
+            }
+            
             setChatHistory(prev => prev.filter(msg => msg.text !== 'Loading...'));
-            const aiMessage = {text: res.data.reply, type: 'response'};
+            const aiMessage = {text: displayText, type: 'response'};
             setChatHistory(prev => [...prev, aiMessage]);
             
         } catch (error) {

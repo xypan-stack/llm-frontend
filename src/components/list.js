@@ -3,15 +3,25 @@ import {Box, Typography, Grid, TextField, Button } from '@mui/material';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { useState } from 'react';
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function LeftList(){
     const router = useRouter();
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const items = ['Mistral LLM'];
-    const routes=['mistral']
+    const pathname = usePathname();
+    const items = ['Mistral LLM','Weather Query'];
+    const routes=['mistral','weather']
 
+    const getSelectedIndex = () => {
+        const current = pathname.split('/').filter(Boolean).pop()||'';
+        const index = routes.indexOf(current);
+        return index>=0 ? index : 0;
+    }
+
+    React.useEffect(() => {
+        const newIndex = getSelectedIndex();
+        setSelectedIndex(newIndex);
+    }, [pathname]);
+    const [selectedIndex, setSelectedIndex] = React.useState(getSelectedIndex);
     const onSelectList = (index) => {
         setSelectedIndex(index);
         console.log(`Selected item: ${items[index]}`);

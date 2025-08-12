@@ -22,7 +22,7 @@ export default function TextBar({
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '400px',
+                width: '100%',
                 padding: 2,
                 boxShadow: 3,
                 borderRadius: 2,
@@ -34,7 +34,6 @@ export default function TextBar({
                 disabled={disabled}
                 sx={{
                     marginTop: 1, 
-                    width: '300px',
                     '& .MuiInput-underline:before': {
                         borderBottom: '1px solid #75c5fa',
                     }  ,
@@ -49,7 +48,8 @@ export default function TextBar({
                     },
                     '& .MuiInput-underline:after': {
                         borderBottom: '2px solid #75c5fa',
-                    }
+                    },
+                    width:"60%"
                 
                 }} 
                 onChange={handleQueryChange}
